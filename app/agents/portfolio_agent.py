@@ -35,8 +35,8 @@ class PortfolioAgent:
         return Agent(
             role="Portfolio Data Aggregator",
             goal="Aggregate and structure portfolio data from multiple sources",
-            backstory="""You are an expert at combining data from GitHub, LinkedIn, 
-            and resume sources into a unified portfolio structure. You ensure data 
+            backstory="""You are an expert at combining data from GitHub and LinkedIn
+            sources into a unified portfolio structure. You ensure data 
             consistency and quality.""",
             allow_delegation=False,
             verbose=True,

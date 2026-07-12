@@ -15,7 +15,6 @@ from app.schemas import (
 )
 from app.services.github_service import GitHubService
 from app.services.linkedin_service import LinkedInService
-from app.services.resume_service import ResumeService
 from app.services.sync_service import SyncService
 from app.agents.portfolio_agent import PortfolioAgent
 
@@ -129,7 +128,6 @@ async def run_sync_flow(user_id: str) -> Dict[str, Any]:
     # Initialize services
     github_service = GitHubService()
     linkedin_service = LinkedInService()
-    resume_service = ResumeService()
     portfolio_agent = PortfolioAgent()
     
     # Collect data from all sources
@@ -158,13 +156,6 @@ async def run_sync_flow(user_id: str) -> Dict[str, Any]:
     finally:
         if linkedin_service:
             await linkedin_service.close()
-    
-    # Resume
-    try:
-        resume_data = await resume_service.get_resume_data()
-        raw_data['resume'] = resume_data
-    except Exception as e:
-        logger.error(f"Resume sync failed: {str(e)}")
     
     # Process with AI agent
     return await portfolio_agent.process_raw_data(raw_data)
