@@ -1,61 +1,61 @@
 # Core Framework
-Flask==2.3.3
-Flask-SQLAlchemy==3.0.5
-Flask-Login==0.6.2
-Flask-Migrate==4.0.5
-Flask-CORS==4.0.0
-Flask-Limiter==3.5.0
+Flask
+Flask-SQLAlchemy
+Flask-Login
+Flask-Migrate
+Flask-CORS
+Flask-Limiter
 
 # Database
-SQLAlchemy==2.0.19
-psycopg2-binary==2.9.9
-alembic==1.12.0
+SQLAlchemy
+psycopg2-binary
+alembic
 
 # AI & ML
-crewai==0.28.8
-crewai_tools==0.1.6
-langchain==0.1.20
-langchain-core==0.1.52
-langchain-community==0.0.38
-langchain-openai==0.1.6
-openai==1.17.0
+crewai
+crewai_tools
+langchain
+langchain-core
+langchain-community
+langchain-openai
+openai
 
 # Data Validation
-pydantic==2.5.0
-pydantic-settings==2.1.0
-email-validator==2.1.0
+pydantic
+pydantic-settings
+email-validator
 
 # Async & Queue
-celery==5.3.4
-redis==5.0.1
+celery
+redis
 
 # External APIs
-httpx==0.25.1
-requests==2.31.0
-python-dotenv==1.0.0
-pyyaml==6.0.1
+httpx
+requests
+python-dotenv
+pyyaml
 
 # Web Scraping
-playwright==1.40.0
-beautifulsoup4==4.12.2
-lxml==4.9.3
+playwright
+beautifulsoup4
+lxml
 
 # Cloud & Storage
-boto3==1.34.0
-supabase==2.0.0
+boto3
+supabase
 
 # Utilities
-python-json-logger==2.0.7
-markdown==3.5.1
-bleach==6.1.0
-pandas==2.0.3
-typing-extensions==4.8.0
+python-json-logger
+markdown
+bleach
+pandas
+typing-extensions
 
 # Monitoring
-sentry-sdk==1.38.0
-prometheus-client==0.19.0
+sentry-sdk
+prometheus-client
 
 # Testing
-pytest==7.4.3
-pytest-cov==4.1.0
-pytest-asyncio==0.21.1
+pytest
+pytest-cov
+pytest-asyncio
