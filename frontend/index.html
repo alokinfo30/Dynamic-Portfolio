@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Portfolio</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-brand">
+                    <span class="logo">🚀</span>
+                    <span class="brand-name">Portfolio</span>
+                </div>
+                <div class="nav-controls">
+                    <button id="syncBtn" class="btn btn-primary">
+                        <span class="sync-icon">🔄</span>
+                        Sync Now
+                    </button>
+                    <span id="lastSynced" class="last-synced">Last synced: Never</span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="container">
+            <!-- Hero Section -->
+            <section id="hero" class="hero-section">
+                <div class="hero-content">
+                    <div class="avatar">
+                        <img id="avatar" src="" alt="Avatar">
+                    </div>
+                    <h1 id="name">Loading...</h1>
+                    <p id="headline">Loading...</p>
+                </div>
+            </section>
+
+            <!-- Experience Section -->
+            <section id="experience" class="section">
+                <h2 class="section-title">💼 Experience</h2>
+                <div id="experienceList" class="experience-grid">
+                    <div class="loading-placeholder">Loading experience...</div>
+                </div>
+            </section>
+
+            <!-- Projects Section -->
+            <section id="projects" class="section">
+                <h2 class="section-title">🚀 Projects</h2>
+                <div id="projectList" class="project-grid">
+                    <div class="loading-placeholder">Loading projects...</div>
+                </div>
+            </section>
+
+            <!-- Skills Section -->
+            <section id="skills" class="section">
+                <h2 class="section-title">🛠️ Skills</h2>
+                <div id="skillsList" class="skills-cloud">
+                    <div class="loading-placeholder">Loading skills...</div>
+                </div>
+            </section>
+
+            <!-- Education Section -->
+            <section id="education" class="section">
+                <h2 class="section-title">🎓 Education</h2>
+                <div id="educationList" class="education-grid">
+                    <div class="loading-placeholder">Loading education...</div>
+                </div>
+            </section>
+
+            <!-- Certifications Section -->
+            <section id="certifications" class="section">
+                <h2 class="section-title">🏆 Certifications</h2>
+                <div id="certificationList" class="certification-grid">
+                    <div class="loading-placeholder">Loading certifications...</div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <p>&copy; 2024 Dynamic Portfolio. Built with ❤️</p>
+                <p class="footer-status">
+                    <span class="status-dot" id="statusDot"></span>
+                    <span id="statusText">System ready</span>
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
