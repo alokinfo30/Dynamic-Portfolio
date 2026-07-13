@@ -1,7 +1,7 @@
 # app/config.py
 import os
 from typing import Optional
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import Field
 from dotenv import load_dotenv
 
@@ -51,21 +51,21 @@ class Settings(BaseSettings):
     CELERY_RESULT_BACKEND: str = Field("redis://localhost:6379/2", env="CELERY_RESULT_BACKEND")
     
     # Security
-    CORS_ALLOWED_ORIGINS: list = Field(
-        ["http://localhost:3000"],
-        env="CORS_ALLOWED_ORIGINS"
-    )
+    CORS_ALLOWED_ORIGINS: list[str] = Field(default=["http://localhost:3000"], env="CORS_ALLOWED_ORIGINS")
     RATE_LIMIT: str = Field("100/hour", env="RATE_LIMIT")
     MAX_REQUEST_SIZE: int = Field(10 * 1024 * 1024, env="MAX_REQUEST_SIZE")
     
     # Monitoring
     LOG_LEVEL: str = Field("INFO", env="LOG_LEVEL")
-    SENTRY_DSN: Optional[str] = Field(None, env="SENTRY_DSN")
+    SENTRY_DSN_BACKEND: Optional[str] = Field(None, env="SENTRY_DSN_BACKEND")
     
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
-        case_sensitive = False
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=False,
+        env_nested_delimiter='__',
+        env_prefix='',
+    )
     
     def get_database_url(self) -> str:
         """Get database URL with proper format"""
