@@ -6,7 +6,7 @@ RUN addgroup --system app && adduser --system --ingroup app app
 # Set environment variables for the non-root user
 ENV HOME=/home/app
 ENV APP_HOME=/home/app/web
-ENV PATH=${APP_HOME}/.local/bin:${PATH}
+ENV PATH=${HOME}/.local/bin:${PATH}
 ENV PYTHONPATH=${APP_HOME}
 
 RUN mkdir -p ${APP_HOME}
