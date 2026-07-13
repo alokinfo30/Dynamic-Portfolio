@@ -5,6 +5,7 @@ Flask-Login
 Flask-Migrate
 Flask-CORS
 Flask-Limiter
+gunicorn
 
 # Database
 SQLAlchemy
