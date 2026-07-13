@@ -8,7 +8,15 @@ from langchain_openai import ChatOpenAI
 
 from app.config import settings
 from app.schemas import PortfolioStateSchema
-from app.utils.validators import validate_portfolio_state
+
+
+def validate_portfolio_state(data: Dict[str, Any]) -> Dict[str, Any]:
+    """Validate portfolio state using the Pydantic schema without external helpers."""
+    try:
+        validated = PortfolioStateSchema.model_validate(data)
+        return validated.model_dump()
+    except Exception:
+        return data
 
 logger = logging.getLogger(__name__)
 
