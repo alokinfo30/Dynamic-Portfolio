@@ -1,6 +1,6 @@
 # app/schemas.py
 from typing import List, Optional, Dict, Any
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator
 from datetime import datetime
 
 
@@ -10,7 +10,7 @@ class ProfileSchema(BaseModel):
     headline: str = Field(..., max_length=500)
     avatar_url: Optional[str] = Field(None, max_length=1000)
     
-    @validator('name')
+    @field_validator('name')
     def validate_name(cls, v):
         if not v.strip():
             raise ValueError("Name cannot be empty")
@@ -24,7 +24,7 @@ class ExperienceSchema(BaseModel):
     duration: str = Field(..., max_length=100)
     bullets: List[str] = Field(default_factory=list)
     
-    @validator('bullets')
+    @field_validator('bullets')
     def validate_bullets(cls, v):
         return [b.strip() for b in v if b.strip()]
 
@@ -37,7 +37,7 @@ class ProjectSchema(BaseModel):
     tech_stack: List[str] = Field(default_factory=list)
     url: Optional[str] = Field(None, max_length=1000)
     
-    @validator('tech_stack')
+    @field_validator('tech_stack')
     def validate_tech_stack(cls, v):
         return [t.strip() for t in v if t.strip()]
 

@@ -242,13 +242,11 @@ class PortfolioApp {
             
             const data = await response.json();
             
-            if (data.status === 'success') {
-                this.renderPortfolio(data.data);
-                this.updateLastSynced(data.last_synced);
-                this.updateStatus('online', 'Sync successful');
-                console.log('✅ Sync completed successfully');
+            if (data.status === 'pending') {
+                this.updateStatus('syncing', data.message);
+                console.log('✅ Sync triggered successfully. Waiting for completion.');
             } else {
-                throw new Error(data.error || 'Unknown error');
+                throw new Error(data.error || 'Failed to start sync process.');
             }
         } catch (error) {
             console.error('❌ Sync error:', error);
