@@ -23,9 +23,9 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Initialize Sentry if configured
-if settings.SENTRY_DSN:
+if settings.SENTRY_DSN_BACKEND:
     sentry_sdk.init(
-        dsn=settings.SENTRY_DSN,
+        dsn=settings.SENTRY_DSN_BACKEND,
         environment=settings.APP_ENV,
         release=settings.APP_NAME
     )
@@ -43,7 +43,7 @@ def create_app():
     app.config['MAX_CONTENT_LENGTH'] = settings.MAX_REQUEST_SIZE
     
     # CORS
-    CORS(app, origins=settings.CORS_ALLOWED_ORIGINS)
+    CORS(app, origins=settings.get_cors_allowed_origins())
     
     # Rate limiting
     limiter = Limiter(
