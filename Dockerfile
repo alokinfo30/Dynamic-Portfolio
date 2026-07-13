@@ -18,6 +18,9 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     && rm -rf /var/lib/apt/lists/*
     
+# Grant ownership of the app home directory to the app user
+RUN chown -R app:app ${HOME}
+
 # Copy requirements and install Python dependencies
 COPY --chown=app:app requirements.txt .
 USER app
