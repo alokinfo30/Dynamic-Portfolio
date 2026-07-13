@@ -79,14 +79,14 @@ class PortfolioStateSchema(BaseModel):
 
 class SyncRequestSchema(BaseModel):
     """Sync request schema"""
-    source: str = Field(..., regex="^(github|linkedin|resume)$")
+    source: str = Field(..., pattern=r"^(github|linkedin|resume)$")
     data: Dict[str, Any]
     user_id: Optional[str] = None
 
 
 class WebhookPayloadSchema(BaseModel):
     """Webhook payload schema"""
-    source: str = Field(..., regex="^(github|linkedin)$")
+    source: str = Field(..., pattern=r"^(github|linkedin)$")
     event_type: str
     payload: Dict[str, Any]
     timestamp: Optional[datetime] = None
