@@ -15,7 +15,7 @@ from app.schemas import (
 )
 from app.services.github_service import GitHubService
 from app.services.linkedin_service import LinkedInService
-from app.services.sync_service import SyncService
+from app.services.sync_service import SyncService, sync_portfolio_task
 from app.agents.portfolio_agent import PortfolioAgent
 
 api_bp = Blueprint('api', __name__, url_prefix='/api')
@@ -75,90 +75,17 @@ def sync_portfolio(): # This remains a sync function
         if not user_id:
             return jsonify({'error': 'User ID required'}), 400
         
-        # We will run the async logic in a separate async function
-        processed_data = asyncio.run(run_sync_flow(user_id))
-
-        if not processed_data:
-             return jsonify({'error': 'Failed to process data from sources.'}), 500
+        # Trigger the background task
+        sync_portfolio_task.delay(user_id)
         
-        # Save to database
-        with get_db_session() as db:
-            portfolio = db.query(Portfolio).filter_by(user_id=user_id).first()
-            if not portfolio:
-                portfolio = Portfolio(user_id=user_id)
-                db.add(portfolio)
-            
-            # Update portfolio
-            portfolio.name = processed_data['profile']['name']
-            portfolio.headline = processed_data['profile']['headline']
-            portfolio.avatar_url = processed_data['profile'].get('avatar_url', '')
-            portfolio.experience = processed_data.get('experience', [])
-            portfolio.projects = processed_data.get('projects', [])
-            portfolio.education = processed_data.get('education', [])
-            portfolio.certifications = processed_data.get('certifications', [])
-            portfolio.skills = processed_data.get('skills', [])
-            portfolio.last_synced = datetime.utcnow()
-            portfolio.sync_status = 'success'
-            
-            # Create sync log
-            sync_log = SyncLog(
-                user_id=user_id,
-                portfolio_id=portfolio.id,
-                source='all',
-                status='success',
-                data=processed_data
-            )
-            db.add(sync_log)
-            
-            db.commit()
-            
-            return jsonify({
-                'status': 'success',
-                'message': 'Portfolio synced successfully',
-                'data': processed_data,
-                'last_synced': portfolio.last_synced.isoformat()
-            })
+        return jsonify({
+            'status': 'pending',
+            'message': 'Portfolio sync has been started in the background.'
+        }), 202
             
     except Exception as e:
         logger.error(f"Sync error: {str(e)}")
         return jsonify({'error': str(e)}), 500
-
-async def run_sync_flow(user_id: str) -> Dict[str, Any]:
-    """Asynchronously runs the full data sync and processing flow."""
-    # Initialize services
-    github_service = GitHubService()
-    linkedin_service = LinkedInService()
-    portfolio_agent = PortfolioAgent()
-    
-    # Collect data from all sources
-    raw_data = {}
-    
-    # GitHub
-    try:
-        # Using asyncio.gather to run multiple calls concurrently
-        profile_task = github_service.get_user_profile(user_id)
-        repos_task = github_service.get_repositories(user_id)
-        github_data, github_repos = await asyncio.gather(profile_task, repos_task)
-        raw_data['github'] = {
-            'profile': github_data,
-            'repositories': github_repos
-        }
-    except Exception as e:
-        logger.error(f"GitHub sync failed: {str(e)}")
-    
-    # LinkedIn
-    try:
-        await linkedin_service.initialize()
-        linkedin_data = await linkedin_service.get_profile_data()
-        raw_data['linkedin'] = linkedin_data
-    except Exception as e:
-        logger.error(f"LinkedIn sync failed: {str(e)}")
-    finally:
-        if linkedin_service:
-            await linkedin_service.close()
-    
-    # Process with AI agent
-    return await portfolio_agent.process_raw_data(raw_data)
 
 
 @api_bp.route('/webhook/github', methods=['POST'])
